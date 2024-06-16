@@ -1,0 +1,166 @@
+<?xml version="1.0" encoding="utf-8"?>
+<ScrollView xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:padding="16dp">
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:orientation="vertical">
+
+
+
+        <TextView
+            android:id="@+id/fund_name"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:textSize="24sp"
+            android:textStyle="bold" />
+
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="Fund Manager : "
+            android:textSize="24sp"
+            android:textStyle="bold" />
+
+        <TextView
+            android:id="@+id/fund_manager"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:textSize="24sp"
+            android:textStyle="bold" />
+
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="Fund Type : "
+            android:textSize="24sp"
+            android:textStyle="bold" />
+
+        <TextView
+            android:id="@+id/fund_type"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:textSize="24sp"
+            android:textStyle="bold" />
+
+
+
+        <TextView
+            android:id="@+id/inception_date"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="Inception Date" />
+
+        <TextView
+            android:id="@+id/net_asset_value"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="Net Asset Value" />
+
+        <TextView
+            android:id="@+id/total_assets"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="Total Assets" />
+
+        <TextView
+            android:id="@+id/total_liabilities"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="Total Liabilities" />
+
+        <TextView
+            android:id="@+id/expense_ratio"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="Expense Ratio" />
+
+        <TextView
+            android:id="@+id/management_fee"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="Management Fee" />
+
+        <TextView
+            android:id="@+id/performance_fee"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="Performance Fee" />
+
+        <TextView
+            android:id="@+id/dividend_yield"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="Dividend Yield" />
+
+        <TextView
+            android:id="@+id/annual_return"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="Annual Return" />
+
+        <TextView
+            android:id="@+id/ytd_return"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="YTD Return" />
+
+        <TextView
+            android:id="@+id/risk"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="Risk" />
+
+        <TextView
+            android:id="@+id/sharpe_ratio"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="Sharpe Ratio" />
+
+        <TextView
+            android:id="@+id/alpha"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="Alpha" />
+
+        <TextView
+            android:id="@+id/beta"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="Beta" />
+
+        <TextView
+            android:id="@+id/r_squared"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="R Squared" />
+
+        <TextView
+            android:id="@+id/benchmark_index"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="Benchmark Index" />
+
+        <TextView
+            android:id="@+id/investment_objective"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="Investment Objective" />
+
+        <TextView
+            android:id="@+id/investment_strategy"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="Investment Strategy" />
+
+        <TextView
+            android:id="@+id/risks"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="Risks" />
+    </LinearLayout>
+</ScrollView>
+
