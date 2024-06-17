@@ -1,19 +1,23 @@
-package com.example.financialmaster;
+package com.example.fundapp.activity;
 
-import android.annotation.SuppressLint;
+import android.content.Context;
 import android.content.Intent;
+import android.content.SharedPreferences;
 import android.os.Bundle;
+import android.view.View;
+import android.widget.ArrayAdapter;
 import android.widget.Button;
 import android.widget.EditText;
-
-import androidx.activity.EdgeToEdge;
+import android.widget.Spinner;
+import android.widget.TextView;
+import androidx.annotation.Nullable;
 import androidx.appcompat.app.AppCompatActivity;
-import androidx.core.graphics.Insets;
-import androidx.core.view.ViewCompat;
-import androidx.core.view.WindowInsetsCompat;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
-
+import com.example.fundapp.R;
+import com.example.fundapp.adapter.FundAdapter;
+import com.example.fundapp.model.Fund;
+import com.example.fundapp.model.InvestmentRecord;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -22,13 +26,18 @@ public class CycleActivity extends AppCompatActivity {
     private RecyclerView recyclerView;
     private FundAdapter fundAdapter;
     private List<Fund> fundList;
+    private Spinner fundSpinner;
     private EditText investmentAmount;
-    private EditText investmentDuration;
+    private Spinner durationSpinner;
     private Button investButton;
-
+    private Button saveButton;
+    private Button settleButton;
+    private TextView fundsTextView;
+    private TextView targetReturnTextView;
+    private double initialFunds = 30000.0;
+    private double targetReturn = 31200.0;
     private int cycle;
 
-    @SuppressLint("MissingInflatedId")
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -37,11 +46,48 @@ public class CycleActivity extends AppCompatActivity {
         cycle = getIntent().getIntExtra("cycle", 1);
 
         recyclerView = findViewById(R.id.recycler_view);
-
+        fundSpinner = findViewById(R.id.fund_spinner);
+        investmentAmount = findViewById(R.id.investment_amount);
+        durationSpinner = findViewById(R.id.duration_spinner);
+        investButton = findViewById(R.id.invest_button);
+        saveButton = findViewById(R.id.button2); // 存档按钮
+        settleButton = findViewById(R.id.button3); // 结算按钮
+        fundsTextView = findViewById(R.id.textView2);
+        targetReturnTextView = findViewById(R.id.textView3);
 
         recyclerView.setLayoutManager(new LinearLayoutManager(this));
 
+        loadFundList();
+        fundAdapter = new FundAdapter(fundList, this);
+        recyclerView.setAdapter(fundAdapter);
+
+        // 设置初始资金和目标收益
+        fundsTextView.setText("资金 : " + initialFunds);
+        targetReturnTextView.setText("目标收益 : " + targetReturn);
+
+        setupSpinners();
+
+        saveButton.setOnClickListener(v -> saveProgress());
+
+        investButton.setOnClickListener(v -> {
+            String amountStr = investmentAmount.getText().toString();
+            if (!amountStr.isEmpty()) {
+                double amount = Double.parseDouble(amountStr);
+                int duration = Integer.parseInt(durationSpinner.getSelectedItem().toString());
+                Fund selectedFund = (Fund) fundSpinner.getSelectedItem();
+                Intent intent = new Intent(CycleActivity.this, SettlementActivity.class);
+                intent.putExtra("amount", amount);
+                intent.putExtra("duration", duration);
+                intent.putExtra("cycle", cycle);
+                intent.putExtra("selectedFund", selectedFund);
+                startActivityForResult(intent, cycle);
+            }
+        });
+    }
+
+    private void loadFundList() {
         fundList = new ArrayList<>();
+        // 添加基金数据
         fundList.add(new Fund("001", "Vanguard 500 Index Fund", "Index Fund", "John Doe", "1976-08-31",
                 300.25, 5000000, 1000000, 0.15, 0.05, 0.10, 1.5, 10.5, 8.2, 0.8, 1.2, 0.5, 1.0,0.95,"S&P 500", "Capital Growth", "Index Strategy", "Market risk, inflation risk"));
         fundList.add(new Fund("002", "Fidelity Contrafund", "Mutual Fund", "Will Danoff", "1967-05-17",
@@ -62,35 +108,50 @@ public class CycleActivity extends AppCompatActivity {
                 220.50, 8000000, 1600000, 0.30, 0.20, 0.25, 1.9, 12.1, 9.5, 0.9, 1.2, 0.6, 1.15,0.89,"Russell 2000", "Capital Growth", "Index Strategy", "Market risk, credit risk"));
         fundList.add(new Fund("010", "Vanguard Total Stock Market Index Fund", "Index Fund", "Jack Bogle", "1992-04-27",
                 230.75, 6500000, 1300000, 0.15, 0.10, 0.20, 1.5, 11.0, 9.0, 0.85, 1.15, 0.65, 1.1,0.90,"CRSP US Total Market", "Capital Growth", "Index Strategy", "Market risk, inflation risk"));
+    }
 
-        fundAdapter = new FundAdapter(fundList, this);
-        recyclerView.setAdapter(fundAdapter);
+    private void setupSpinners() {
+        ArrayAdapter<Fund> fundAdapter = new ArrayAdapter<>(this, android.R.layout.simple_spinner_item, fundList);
+        fundAdapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
+        fundSpinner.setAdapter(fundAdapter);
 
-        investButton.setOnClickListener(v -> {
-            String amountStr = investmentAmount.getText().toString();
-            String durationStr = investmentDuration.getText().toString();
-            if (!amountStr.isEmpty() && !durationStr.isEmpty()) {
-                double amount = Double.parseDouble(amountStr);
-                int duration = Integer.parseInt(durationStr);
-                Intent intent = new Intent(CycleActivity.this, SettlementActivity.class);
-                intent.putExtra("amount", amount);
-                intent.putExtra("duration", duration);
-                intent.putExtra("cycle", cycle);
-                startActivityForResult(intent, cycle);
-            }
-        });
+        List<String> durationOptions = new ArrayList<>();
+        durationOptions.add("1");
+        durationOptions.add("3");
+        durationOptions.add("6");
+        durationOptions.add("12");
+
+        ArrayAdapter<String> durationAdapter = new ArrayAdapter<>(this, android.R.layout.simple_spinner_item, durationOptions);
+        durationAdapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
+        durationSpinner.setAdapter(durationAdapter);
+    }
+
+    private void saveProgress() {
+        SharedPreferences sharedPreferences = getSharedPreferences("FinanceMaster", Context.MODE_PRIVATE);
+        SharedPreferences.Editor editor = sharedPreferences.edit();
+        editor.putInt("cycle", cycle);
+        editor.putString("investmentAmount", investmentAmount.getText().toString());
+        editor.putString("investmentDuration", durationSpinner.getSelectedItem().toString());
+        editor.putFloat("initialFunds", (float) initialFunds);
+        editor.putFloat("targetReturn", (float) targetReturn);
+        editor.apply();
     }
 
     @Override
-    protected void onActivityResult(int requestCode, int resultCode, Intent data) {
+    protected void onActivityResult(int requestCode, int resultCode, @Nullable Intent data) {
         super.onActivityResult(requestCode, resultCode, data);
         if (resultCode == RESULT_OK) {
-            setResult(RESULT_OK);
-            finish();
-        } else {
-            setResult(RESULT_CANCELED);
-            finish();
+            // 处理结算成功后的逻辑
+            initialFunds = data.getDoubleExtra("finalAmount", initialFunds);
+            fundsTextView.setText("资金 : " + initialFunds);
+
+            if (initialFunds >= targetReturn) {
+                targetReturn *= 1.01; // 增加1%的目标收益
+                cycle++;
+            } else {
+                // 如果结算失败，提供相应的反馈
+            }
+            targetReturnTextView.setText("目标收益 : " + targetReturn);
         }
     }
 }
-
