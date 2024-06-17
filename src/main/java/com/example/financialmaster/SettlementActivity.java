@@ -1,77 +1,56 @@
-package com.example.financialmaster;
+package com.example.fundapp.activity;
 
-import android.annotation.SuppressLint;
+import android.content.Intent;
 import android.os.Bundle;
-import android.widget.Button;
 import android.widget.TextView;
-
-import androidx.activity.EdgeToEdge;
 import androidx.appcompat.app.AppCompatActivity;
-import androidx.core.graphics.Insets;
-import androidx.core.view.ViewCompat;
-import androidx.core.view.WindowInsetsCompat;
-
+import com.example.fundapp.R;
+import com.example.fundapp.model.Fund;
 import java.util.Random;
 
 public class SettlementActivity extends AppCompatActivity {
 
-    private TextView resultTextView;
-    private Button retryButton;
-    private Button nextButton;
+    private TextView settlementResult;
+    private double annualReturnRate;
+    private double initialAmount;
+    private int duration;
+    private Fund selectedFund;
 
-    @SuppressLint("MissingInflatedId")
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_settlement);
 
-        resultTextView = findViewById(R.id.result_text_view);
-        retryButton = findViewById(R.id.retry_button);
-        nextButton = findViewById(R.id.next_button);
+        settlementResult = findViewById(R.id.settlement_result);
 
-        double amount = getIntent().getDoubleExtra("amount", 0);
-        int duration = getIntent().getIntExtra("duration", 0);
-        int cycle = getIntent().getIntExtra("cycle", 1);
+        Intent intent = getIntent();
+        initialAmount = intent.getDoubleExtra("amount", 0);
+        duration = intent.getIntExtra("duration", 0);
+        selectedFund = (Fund) intent.getSerializableExtra("selectedFund");
 
-        double targetReturn = calculateTargetReturn(cycle, amount);
-
-        // 模拟结算逻辑
-        Random random = new Random();
-        double profitOrLoss = amount * (0.02 + (random.nextDouble() * 0.06) - 0.03);
-        double finalAmount = amount + profitOrLoss;
-
-        String resultText = "投资金额: " + amount + "\n" +
-                "投资周期: " + duration + " 个月\n" +
-                "结算金额: " + finalAmount + "\n" +
-                (finalAmount >= targetReturn ? "结算成功: 获得收益" : "结算失败: 未达到预期收益");
-
-        resultTextView.setText(resultText);
-
-        retryButton.setOnClickListener(v -> {
-            setResult(RESULT_CANCELED);
-            finish();
-        });
-
-        nextButton.setOnClickListener(v -> {
-            setResult(RESULT_OK);
-            finish();
-        });
+        // 模拟计算收益或亏损
+        double finalAmount = calculateSettlement(initialAmount, duration, selectedFund);
+        displayResult(finalAmount);
     }
 
-    private double calculateTargetReturn(int cycle, double amount) {
-        switch (cycle) {
-            case 1:
-                return amount * 1.04;
-            case 2:
-                return amount * 1.04;
-            case 3:
-                return amount * 1.04;
-            case 4:
-                return amount * 1.04;
-            case 5:
-                return amount * 1.04;
-            default:
-                return amount * 1.04;
+    private double calculateSettlement(double amount, int duration, Fund fund) {
+        double annualReturnRate = fund.getAnnualReturn() / 100;
+        double dailyReturnRate = annualReturnRate / 365;
+        double finalAmount = amount * Math.pow((1 + dailyReturnRate), duration * 30); // 近似每月30天
+        return finalAmount;
+    }
+
+    private void displayResult(double finalAmount) {
+        double profit = finalAmount - initialAmount;
+        double profitPercentage = (profit / initialAmount) * 100;
+
+        if (profitPercentage >= 4) {
+            settlementResult.setText("结算成功: 达到或超过4%目标收益。盈利: " + profit + " (" + profitPercentage + "%)");
+            setResult(RESULT_OK, new Intent().putExtra("finalAmount", finalAmount));
+        } else {
+            settlementResult.setText("结算失败: 未达到目标收益。亏损: " + profit + " (" + profitPercentage + "%)");
+            setResult(RESULT_CANCELED, new Intent().putExtra("finalAmount", finalAmount));
         }
+        finish();
     }
 }
