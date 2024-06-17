@@ -148,10 +148,13 @@ public class CycleActivity extends AppCompatActivity {
             if (initialFunds >= targetReturn) {
                 targetReturn *= 1.01; // 增加1%的目标收益
                 cycle++;
+                Intent intent = new Intent(CycleActivity.this, CycleSuccessActivity.class);
+                intent.putExtra("cycle", cycle);
+                startActivity(intent);
             } else {
-                // 如果结算失败，提供相应的反馈
+                Intent intent = new Intent(CycleActivity.this, CycleFailureActivity.class);
+                startActivity(intent);
             }
-            targetReturnTextView.setText("目标收益 : " + targetReturn);
         }
     }
 }
