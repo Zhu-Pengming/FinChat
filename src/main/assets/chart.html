@@ -1,0 +1,59 @@
+<!DOCTYPE html>
+<html lang="zh">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>折线图示例</title>
+    <!-- 引入Chart.js库 -->
+    <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+</head>
+<body>
+<div style="width: 50%; margin: auto;">
+    <canvas id="myLineChart"></canvas>
+</div>
+
+<script>
+    // 获取数据
+    const data = {
+        labels: ['2022上半', '2022下半', '2023上半', '2023下半', '2024上半'],
+        datasets: [{
+            label: '该基金涨跌幅',
+            data: [1.67, 0.70, 2.22, 1.48, 2.01],
+            backgroundColor: 'rgba(75, 192, 192, 0.2)',
+            borderColor: 'rgba(75, 192, 192, 1)',
+            borderWidth: 1,
+            fill: false,
+        }, {
+            label: '基金指数',
+            data: [1.50, 0.80, 2.00, 1.30, 1.90], // 示例数据
+            backgroundColor: 'rgba(255, 99, 132, 0.2)',
+            borderColor: 'rgba(255, 99, 132, 1)',
+            borderWidth: 1,
+            fill: false,
+        }]
+    };
+
+    // 创建折线图
+    const ctx = document.getElementById('myLineChart').getContext('2d');
+    const myLineChart = new Chart(ctx, {
+        type: 'line',
+        data: data,
+        options: {
+            scales: {
+                x: {
+                    beginAtZero: true
+                },
+                y: {
+                    beginAtZero: true
+                }
+            },
+            plugins: {
+                legend: {
+                    display: true // 显示图例
+                }
+            }
+        }
+    });
+</script>
+</body>
+</html>
