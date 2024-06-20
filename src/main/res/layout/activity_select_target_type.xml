@@ -1,0 +1,89 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:id="@+id/main"
+    android:background="@drawable/current_type"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    tools:context=".SelectTargetTypeActivity">
+
+
+    <ImageView
+        android:id="@+id/type_extroverted"
+        android:layout_width="100dp"
+        android:layout_height="45dp"
+        android:layout_alignParentEnd="true"
+        android:layout_alignParentBottom="true"
+        android:layout_marginEnd="254dp"
+        android:layout_marginBottom="596dp"
+        android:background="@drawable/type_extroverted"
+        android:text="外向型" />
+
+    <ImageView
+        android:id="@+id/type_introverted"
+        android:layout_width="100dp"
+        android:layout_height="45dp"
+        android:layout_alignParentEnd="true"
+        android:layout_alignParentBottom="true"
+        android:layout_marginEnd="61dp"
+        android:layout_marginBottom="522dp"
+        android:background="@drawable/type_introverted"
+        android:text="内向型" />
+
+    <ImageView
+        android:id="@+id/type_intelligent"
+        android:layout_width="100dp"
+        android:layout_height="45dp"
+        android:layout_alignParentEnd="true"
+        android:layout_alignParentBottom="true"
+        android:layout_marginEnd="251dp"
+        android:layout_marginBottom="439dp"
+        android:background="@drawable/type_intelligent"
+        android:text="理智型" />
+
+    <ImageView
+        android:id="@+id/type_emotional"
+        android:layout_width="100dp"
+        android:layout_height="45dp"
+        android:layout_alignParentEnd="true"
+        android:layout_alignParentBottom="true"
+        android:layout_marginEnd="60dp"
+        android:layout_marginBottom="366dp"
+        android:background="@drawable/type_emotional"
+        android:text="情绪型" />
+
+    <ImageView
+        android:id="@+id/type_determined"
+        android:layout_width="100dp"
+        android:layout_height="45dp"
+        android:layout_alignParentEnd="true"
+        android:layout_alignParentBottom="true"
+        android:layout_marginEnd="253dp"
+        android:layout_marginBottom="100dp"
+        android:background="@drawable/type_determined"
+        android:text="意志型" />
+
+    <ImageView
+        android:id="@+id/type_independent"
+        android:layout_width="100dp"
+        android:layout_height="45dp"
+        android:layout_alignParentEnd="true"
+        android:layout_alignParentBottom="true"
+        android:layout_marginEnd="63dp"
+        android:layout_marginBottom="170dp"
+        android:background="@drawable/type_independent"
+        android:text="独立型" />
+
+    <ImageView
+        android:id="@+id/type_obedient"
+        android:layout_width="100dp"
+        android:layout_height="45dp"
+        android:layout_alignParentEnd="true"
+        android:layout_alignParentBottom="true"
+        android:layout_marginEnd="248dp"
+        android:layout_marginBottom="266dp"
+        android:background="@drawable/type_obedient"
+        android:text="顺从型" />
+
+</RelativeLayout>
